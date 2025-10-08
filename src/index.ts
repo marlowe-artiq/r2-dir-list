@@ -65,6 +65,22 @@ export default {
         // remove the leading '/'
         const objectKey = siteConfig.decodeURI ? decodeURIComponent(path.slice(1)) : path.slice(1);
 
+        // Handle redirect if configured
+        if (siteConfig.redirect) {
+            const { key: redirectKey, force: forceRedir } = await siteConfig.redirect(siteConfig.bucket, objectKey);
+            if (redirectKey !== objectKey) {
+                // If force is false, only redirect when the original key does not exist
+                if (forceRedir && originResponse.status !== 404) {
+                    console.warn(`Force redirect from ${objectKey} to ${redirectKey} while ${objectKey} exist`);
+                }
+                if (forceRedir || originResponse.status === 404) {
+                    const redirectURL = new URL(request.url);
+                    redirectURL.pathname = '/' + (siteConfig.decodeURI ? encodeURIComponent(redirectKey) : redirectKey);
+                    return Response.redirect(redirectURL.toString(), 302);
+                }
+            }
+        }
+
         if (shouldReturnOriginResponse(originResponse, siteConfig)) {
             return originResponse;
         }
