@@ -16,15 +16,22 @@ export function getSiteConfig(env: Env, domain: string): SiteConfig | undefined 
             /// Recommended to enable it for new installations, but default to false for backward compatibility
             decodeURI: true, 
 
-            /// [Optional] redirect example
+            /// [Optional] redirect function
             /// Example: redirect requests for '/old-path' to '/new-path' and force the redirect even if
             /// an object exists at the original key.
-            redirect: async (bucket, key: string) => {
-                // if (key === 'old-path') {
-                //     return { key: 'new-path', force: true };
-                // }
-                return { key, force: false };
-            },
+            // redirect: async (bucket, key: string) => {
+            //     if (key === 'old-path') {
+            //         return { key: 'new-path', force: true };
+            //     }
+            //     return { key, force: false };
+            // },
+
+            /// [Optional] sortFn: Custom sorting function for files and folders
+            /// Example: sort in descending lexicographical order
+            // sortFn: {
+            //     files: (a, b) => b.key.localeCompare(a.key),
+            //     folders: (a, b) => b.localeCompare(a),
+            // },
 
             /// [Optional] Legal information of your website
             /// Your local government (for example Mainland China) may requires you to put some legal info at footer

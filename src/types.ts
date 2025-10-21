@@ -21,4 +21,15 @@ export interface SiteConfig {
      * When not provided, no redirect is performed.
      */
     redirect?: (bucket: R2Bucket, key: string) => Promise<{ key: string; force: boolean }>;
+    /**
+     * Optional sortFn: Custom sorting function for files and folders.
+     * It is expected to return a negative value if the first argument
+     * is less than the second argument, zero if they're equal,
+     * and a positive value otherwise. If omitted, the elements are
+     * displayed in the order returned by R2.
+     */
+    sortFn?: {
+        files?: (a: R2Object, b: R2Object) => number;
+        folders?: (a: string, b: string) => number;
+    };
 }

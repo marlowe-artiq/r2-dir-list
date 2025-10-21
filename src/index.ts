@@ -94,6 +94,13 @@ export default {
         // filter out key===prefix, appears when dangerousOverwriteZeroByteObject===true
         const files = index.objects.filter((obj) => obj.key !== objectKey);
         const folders = index.delimitedPrefixes.filter((prefix) => prefix !== objectKey);
+        // Apply custom sorting if provided
+        if (siteConfig.sortFn?.files) {
+            files.sort(siteConfig.sortFn.files);
+        }
+        if (siteConfig.sortFn?.folders) {
+            folders.sort(siteConfig.sortFn.folders);
+        }
         // If no object found, return origin 404 response. Only return 404 because if there is a zero byte object,
         // user may want to show a empty folder.
         if (files.length === 0 && folders.length === 0 && originResponse.status === 404) {
