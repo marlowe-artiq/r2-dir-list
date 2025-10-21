@@ -1,5 +1,5 @@
 {
-  "name": "s3-dir-list",
+  "name": "r2-dir-list",
   "version": "0.0.0",
   "private": true,
   "scripts": {
